@@ -1,139 +1,114 @@
-﻿
-using System;
-using SystemCollection;
+﻿using System;
+
 abstract class TiketBioskop
 {
-    private String namaPenonton;
-    private String idBooking;
-    private String judulFilm;
+    private string namaPenonton;
+    private string idBooking;
+    private string judulFilm;
 
-    public TiketBioskop(String namaPenonton, String idBooking, String judulFilm)
+    public TiketBioskop(string namaPenonton, string idBooking, string judulFilm)
     {
         this.namaPenonton = namaPenonton;
         this.idBooking = idBooking;
         this.judulFilm = judulFilm;
     }
 
-    public String getNamaPenonton()
+    public string NamaPenonton
     {
-        return namaPenonton;
+        get { return namaPenonton; }
+        set { namaPenonton = value; }
     }
 
-    public void setNamaPenonton(String namaPenonton)
+    public string IdBooking
     {
-        this.namaPenonton = namaPenonton;
+        get { return idBooking; }
+        set { idBooking = value; }
     }
 
-    public String getIdBooking()
+    public string JudulFilm
     {
-        return idBooking;
+        get { return judulFilm; }
+        set { judulFilm = value; }
     }
 
-    public void setIdBooking(String idBooking)
+    public void TampilInfo()
     {
-        this.idBooking = idBooking;
+        Console.WriteLine("Nama Penonton : " + namaPenonton);
+        Console.WriteLine("ID Booking    : " + idBooking);
+        Console.WriteLine("Judul Film    : " + judulFilm);
     }
 
-    public String getJudulFilm()
-    {
-        return judulFilm;
-    }
-
-    public void setJudulFilm(String judulFilm)
-    {
-        this.judulFilm = judulFilm;
-    }
-
-    public void tampilInfo()
-    {
-        System.out.println("Nama Penonton : " + namaPenonton);
-        System.out.println("ID Booking    : " + idBooking);
-        System.out.println("Judul Film    : " + judulFilm);
-    }
-
-    abstract double hitungTotalHarga(int jumlahTiket);
+    public abstract double HitungTotalHarga(int jumlahTiket);
 }
 
-class TiketReguler extends TiketBioskop
+class TiketReguler : TiketBioskop
 {
-
     private double hargaTiket;
 
+    public TiketReguler(string namaPenonton, string idBooking,
+                        string judulFilm, double hargaTiket)
+        : base(namaPenonton, idBooking, judulFilm)
+    {
+        this.hargaTiket = hargaTiket;
+    }
 
-public TiketReguler(String namaPenonton, String idBooking,
-                     String judulFilm, double hargaTiket)
-{
-
-    super(namaPenonton, idBooking, judulFilm);
-    this.hargaTiket = hargaTiket;
+    public override double HitungTotalHarga(int jumlahTiket)
+    {
+        return jumlahTiket * hargaTiket;
+    }
 }
 
-
-@Override
-    double hitungTotalHarga(int jumlahTiket)
+class TiketPremiere : TiketBioskop
 {
-    return jumlahTiket * hargaTiket;
-}
-}
-
-
-class TiketPremiere extends TiketBioskop
-{
-
     private double hargaTiket;
-private double biayaLounge;
+    private double biayaLounge;
 
-public TiketPremiere(String namaPenonton, String idBooking,
-                     String judulFilm, double hargaTiket,
-                     double biayaLounge)
-{
+    public TiketPremiere(string namaPenonton, string idBooking,
+                         string judulFilm, double hargaTiket,
+                         double biayaLounge)
+        : base(namaPenonton, idBooking, judulFilm)
+    {
+        this.hargaTiket = hargaTiket;
+        this.biayaLounge = biayaLounge;
+    }
 
-    super(namaPenonton, idBooking, judulFilm);
-    this.hargaTiket = hargaTiket;
-    this.biayaLounge = biayaLounge;
-}
-
-@Override
-    double hitungTotalHarga(int jumlahTiket) {
+    public override double HitungTotalHarga(int jumlahTiket)
+    {
         return (jumlahTiket * hargaTiket) + biayaLounge;
     }
 }
 
-
-public class Main
+class Program
 {
-    public static void main(String[] args)
+    static void Main(string[] args)
     {
-
-        
         TiketReguler reguler = new TiketReguler(
-                "Mayshita",
-                "REG001",
-                "Avengers Endgame",
-                50000
+            "Mayshita",
+            "REG001",
+            "Avengers Endgame",
+            50000
         );
 
-        
         TiketPremiere premiere = new TiketPremiere(
-                "Alifia",
-                "PRE001",
-                "Doctor Strange",
-                100000,
-                50000
+            "Alifia",
+            "PRE001",
+            "Doctor Strange",
+            100000,
+            50000
         );
 
-        
-        System.out.println("=== TIKET REGULER ===");
-        reguler.tampilInfo();
-        System.out.println("Total Harga : Rp " +
-                reguler.hitungTotalHarga(2));
+        Console.WriteLine("=== TIKET REGULER ===");
+        reguler.TampilInfo();
+        Console.WriteLine("Total Harga : Rp " +
+            reguler.HitungTotalHarga(2));
 
-        System.out.println();
+        Console.WriteLine();
 
-        
-        System.out.println("=== TIKET PREMIERE ===");
-        premiere.tampilInfo();
-        System.out.println("Total Harga : Rp " +
-                premiere.hitungTotalHarga(2));
+        Console.WriteLine("=== TIKET PREMIERE ===");
+        premiere.TampilInfo();
+        Console.WriteLine("Total Harga : Rp " +
+            premiere.HitungTotalHarga(2));
+
+        Console.ReadLine();
     }
 }
